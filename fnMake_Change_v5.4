@@ -1,0 +1,133 @@
+﻿#! /usr/bin/python3
+# 11/16/16 - 11/19/16 Sandy L. Ortiz INFO 246-13 Python Lab #6 exercise 1 function fnMake_change
+
+"""
+Author: Sandy L. Ortiz INFO 246-13 FALL 2016
+
+Purpose: Calculate change due and count number of currency and coin needed for change in USD.
+
+Algorithm:
+1. Get the input for amount tender and amount due.
+2. Include a Try/Except for error handling of amounts over $100.
+3. Subtract the amount due from the amount tendered to calcualte the change returned.
+4. Cast the dollars variable to integer to remove the float value.
+5. Subtract the dollars from total amount due to calculate cents.
+6. Iterate and count dollars.
+7. Iterate and count cents.
+8. Print dollar count not equal to zero
+9. Print cents count not equal to zero
+10. Test for input values over $100
+11. Test for input values other than string.
+
+Reference: https://www.dotnetperls.com/divmod-python
+
+Test Case:
+1)21.21 amt_due, 51.51 amt_tender = 30.30 ret_chg, count 20(1), 10(1), .25(1), .05(1)
+2)1.08 amt_due, 10.80 amt_tender = 9.72 ret_chg, count 5(1), 1(4), .25(2), .10(2), .01(2)
+3)200 amt_due, 200 amt_tender = exception block
+4)spacebar input > ValueError
+
+"""
+def fnMake_change(amt_due,amt_tend):
+    #calcuate return amount
+    ret_amt = amt_tend - amt_due
+    #cast to integer dollars
+    dollars = int(ret_amt)
+    #cast to integer cents
+    cents = int((ret_amt - dollars)*100)
+    print("Amount due and amount tendered:\t",amt_due, amt_tend)
+    print ("Return Amount:\t",format(ret_amt,".2f"))    
+
+    #iterate through coins and count
+    def make_cents(cents) :
+        parts = divmod(cents, 25)
+        quarters = parts[0]
+        cents_remaining = parts[1]
+        parts = divmod(cents_remaining, 10)
+        dimes = parts[0]
+        cents_remaining = parts[1]
+        parts = divmod(cents_remaining, 5)
+        nickels = parts[0]
+        cents_remaining = parts[1]
+        parts = divmod(cents_remaining, 1)
+        pennies = parts[0]
+        cents_remaining = parts[1]
+        print("Cents:\t\t", cents)
+
+        #test for zero count and output coins counted
+        while quarters != 0 :
+            print("Quarters:\t", quarters)
+            break
+        while dimes != 0 :
+            print("Dimes:\t\t", dimes)
+            break
+        while nickels != 0 :
+            print("Nickles:\t", nickels)
+            break
+        while pennies != 0 :
+            print("Pennies:\t", pennies,"\n") 
+            break
+    make_cents(cents)
+
+    #iterate through dollars and count
+    def make_dollars(dollars) :
+        parts = divmod(dollars, 20)
+        twenties = parts[0]
+        dollars_remaining = parts[1]
+        parts = divmod(dollars_remaining, 10)
+        tens = parts[0]
+        dollars_remaining = parts[1]
+        parts = divmod(dollars_remaining, 5)
+        fives = parts[0]
+        dollars_remaining = parts[1]
+        parts = divmod(dollars_remaining, 1)
+        singles = parts[0]
+        dollars_remaining = parts[1]
+        print("Dollars:\t", dollars)
+        
+        #test for zero count and ouput dollars counted
+        while twenties != 0 :
+            print("Twenties:\t", twenties)
+            break
+        while tens != 0 :
+            print("Tens:\t\t", tens)
+            break
+        while fives !=0 :
+            print("Fives:\t\t", fives)
+            break
+        while singles !=0 :
+            print("Singles:\t", singles) 
+            break
+    make_dollars(dollars)
+
+def main():
+    try:
+        #get inputs and cast from string to float
+        amt_due= float(input("Please enter amount due: "))
+        amt_tend= float(input("Please enter amount tendered: "))
+
+        #test for value less than or equal to 100, handle input exceptions
+        if amt_due <= 100 and amt_tend <= 100 :
+            fnMake_change(amt_due, amt_tend) #call fnMake_change and pass float
+        else :
+            print ("Sorry, amount due or amount tendered must be $100 or less")
+            repeat = input ("Would you like to try again? ")
+            repeat.lower()
+            while repeat == "n":
+                exit()
+            while repeat == "y":
+                main()
+                break
+            
+    #handle value exceptions, incorrect characters or spacebar        
+    except (ValueError) as e:
+        print ("Sorry, there was an input error.")
+        repeat = input ("Would you like to try again? ")
+        repeat.lower()
+        if repeat == "y":
+            main()
+        else :
+            exit()
+main()
+
+
